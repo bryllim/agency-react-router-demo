@@ -1,4 +1,5 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
+import { Helmet } from 'react-helmet';
 
 function Layout() {
 
@@ -6,6 +7,30 @@ function Layout() {
 
   return (
     <div className="container mt-5 p-5 border">
+
+    <Helmet>
+      {
+        location.pathname === '/' ?
+        (
+          <title>MyAgency - Home</title>
+        ) : ""
+      }
+
+      {
+        location.pathname === '/about' ?
+        (
+          <title>MyAgency - About</title>
+        ) : ""
+      }
+
+      {
+        location.pathname === '/contact' ?
+        (
+          <title>MyAgency - Contact</title>
+        ) : ""
+      }
+      </Helmet>
+
 
       {/* Navbar */}
       <nav className="navbar navbar-expand-lg bg-light">

@@ -1,6 +1,7 @@
 function Home(){
     return(
         <div className="container my-5">
+
             {/* Hero Section */}
             <section className="row">
                 <div className="col-md-7 my-auto" data-aos="fade-right" >
