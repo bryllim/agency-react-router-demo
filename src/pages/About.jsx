@@ -1,38 +1,47 @@
 import { useState, useEffect } from "react";
+import { db } from '../firebase';
+import { collection, getDocs } from 'firebase/firestore';
 
 function About(){
 
-    const [todo, setTodo] = useState({});
+    const [data, setData] = useState([]);
 
-    const [count, setCount] = useState(1);
+    const [exampleState, setExampleState] = useState(0);
 
-    const [isLoading, setIsLoading] = useState(false);
+    useEffect(()=>{
 
-    const fetchData = async () => {
-        setIsLoading(true);
-        const response = await fetch('https://jsonplaceholder.typicode.com/todos/'+count);
-        const json = await response.json();
-        setTodo(json);
-        setIsLoading(false);
-    };
+        const fetchData = async () => {
 
-    useEffect(() =>{
+            const querySnapshot = await getDocs(collection(db, "students"));
+            const fetchedData = querySnapshot.docs.map((doc) => doc.data());
+
+            setData(fetchedData);
+        }
+
         fetchData();
-    }, [count])
+
+    }, [exampleState]);
 
     return(
-        <>
-            
-            <h1>
-                {isLoading ? (<div className="spinner-border text-dark" role="status"></div>) : todo.title}
-            </h1>
+        <section className="container p-5">
+            <button onClick={()=>{
+                setExampleState(exampleState + 1)
+            }}>{exampleState}</button>
+            <div className="row">
 
-            <button onClick={
-                () => {
-                    setCount(count + 1)
-                }
-            } className="btn btn-dark my-5">Get todo</button>
-        </>
+                {data.map((student) => (
+                    <div key={student.id} className="col-md-4 d-flex">
+                    <div className="card">
+                        <div className="card-body">
+                            <h1>{student.firstname} {student.lastname}</h1>
+                            <div className="alert bg-primary text-white">{student.grade}</div>
+                        </div>
+                    </div>
+                </div>
+                ))}
+                
+            </div>
+        </section>
     )
 }
 
